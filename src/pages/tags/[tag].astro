@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { labelFor, severityLabels, statusLabels, tagLabels } from "../../data/labels.js";
 
 export function getStaticPaths() {
   const caseModules = import.meta.glob("../cases/*.md", { eager: true });
@@ -21,15 +22,16 @@ export function getStaticPaths() {
 }
 
 const { tag, cases } = Astro.props;
+const tagLabel = labelFor(tagLabels, tag);
 ---
 
-<BaseLayout title={`${tag} | Goddamn Apps`}>
+<BaseLayout title={`${tagLabel} | Goddamn Apps`}>
   <section class="case-page">
-    <a class="back-link" href="/tags/">Back to tags</a>
+    <a class="back-link" href="/tags/">返回标签</a>
     <header class="case-hero">
-      <p class="eyebrow">Tag</p>
-      <h1>{tag}</h1>
-      <p class="summary">Cases tagged with {tag}.</p>
+      <p class="eyebrow">标签</p>
+      <h1>{tagLabel}</h1>
+      <p class="summary">所有标记为“{tagLabel}”的记录。</p>
     </header>
 
     <div class="case-grid">
@@ -39,8 +41,8 @@ const { tag, cases } = Astro.props;
           <h2><a href={entry.url}>{entry.title}</a></h2>
           <p>{entry.summary}</p>
           <div class="case-meta">
-            <span class="badge amber">{entry.status}</span>
-            <span class="badge danger">{entry.severity}</span>
+            <span class="badge amber">{labelFor(statusLabels, entry.status)}</span>
+            <span class="badge danger">{labelFor(severityLabels, entry.severity)}</span>
           </div>
         </article>
       ))}

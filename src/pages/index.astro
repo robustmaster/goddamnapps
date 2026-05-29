@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { labelFor, severityLabels, statusLabels, tagLabels } from "../data/labels.js";
 
 const caseModules = import.meta.glob("./cases/*.md", { eager: true });
 const cases = Object.values(caseModules)
@@ -15,38 +16,41 @@ const allTags = [...new Set(cases.flatMap((entry) => entry.tags ?? []))].sort();
 <BaseLayout>
   <section class="hero">
     <div>
-      <p class="eyebrow">Consumer harm, minus the corporate poetry.</p>
-      <h1>Apps that screw users, documented with receipts.</h1>
+      <p class="eyebrow">坑用户可以，别怕被记下来。</p>
+      <h1 class="hero-title">
+        <span>狗日的 App，</span>
+        <span>一笔一笔记账。</span>
+      </h1>
       <p class="hero-copy">
-        Goddamn Apps is a small public notebook for privacy abuse, dark patterns,
-        malware-like behavior, refund hell, and other user-hostile software.
+        这里记录那些偷隐私、玩暗黑模式、滥用权限、退款踢皮球、把用户当耗材的产品和公司。
+        情绪可以很大，证据必须够硬。
       </p>
     </div>
     <aside class="callout">
-      <strong>Got receipts?</strong>
+      <strong>有证据？</strong>
       <p>
-        Send source links, screenshots, version numbers, and reproduction notes to
-        <a href="mailto:tips@goddamnapps.com">tips@goddamnapps.com</a>.
+        把来源链接、截图、版本号、复现步骤发到
+        <a href="mailto:tips@goddamnapps.com">tips@goddamnapps.com</a>。
       </p>
     </aside>
   </section>
 
   <section aria-labelledby="tags-heading">
     <div class="section-head">
-      <h2 id="tags-heading">Tags</h2>
+      <h2 id="tags-heading">标签</h2>
     </div>
     <div class="tag-list">
-      {allTags.map((tag) => <a class="pill" href={`/tags/${tag}/`}>{tag}</a>)}
+      {allTags.map((tag) => <a class="pill" href={`/tags/${tag}/`}>{labelFor(tagLabels, tag)}</a>)}
     </div>
   </section>
 
   <section aria-labelledby="latest-heading">
     <div class="section-head">
-      <h2 id="latest-heading">Latest cases</h2>
+      <h2 id="latest-heading">最新记录</h2>
     </div>
 
     {cases.length === 0 ? (
-      <p class="empty">No cases yet.</p>
+      <p class="empty">还没有记录。</p>
     ) : (
       <div class="case-grid">
         {cases.map((entry) => (
@@ -55,9 +59,9 @@ const allTags = [...new Set(cases.flatMap((entry) => entry.tags ?? []))].sort();
             <h3><a href={entry.url}>{entry.title}</a></h3>
             <p>{entry.summary}</p>
             <div class="case-meta">
-              <span class="badge amber">{entry.status}</span>
-              <span class="badge danger">{entry.severity}</span>
-              {(entry.tags ?? []).map((tag) => <span class="badge teal">{tag}</span>)}
+              <span class="badge amber">{labelFor(statusLabels, entry.status)}</span>
+              <span class="badge danger">{labelFor(severityLabels, entry.severity)}</span>
+              {(entry.tags ?? []).map((tag) => <span class="badge teal">{labelFor(tagLabels, tag)}</span>)}
             </div>
           </article>
         ))}

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { labelFor, tagLabels } from "../../data/labels.js";
 
 const caseModules = import.meta.glob("../cases/*.md", { eager: true });
 const cases = Object.values(caseModules).map((entry) => entry.frontmatter);
@@ -13,25 +14,24 @@ const tagCounts = cases.reduce((counts, entry) => {
 const tags = [...tagCounts.entries()].sort(([a], [b]) => a.localeCompare(b));
 ---
 
-<BaseLayout title="Tags | Goddamn Apps">
+<BaseLayout title="标签 | Goddamn Apps">
   <section class="case-page">
     <header class="case-hero">
-      <p class="eyebrow">Tags</p>
-      <h1>How the apps are cursed.</h1>
-      <p class="summary">Behavior tags describe what the company did to users.</p>
+      <p class="eyebrow">标签</p>
+      <h1>它们到底怎么坑用户。</h1>
+      <p class="summary">标签只描述行为类型，不拿公司名充数。</p>
     </header>
 
     {tags.length === 0 ? (
-      <p class="empty">No tags yet.</p>
+      <p class="empty">还没有标签。</p>
     ) : (
       <div class="tag-list">
         {tags.map(([tag, count]) => (
           <a class="pill" href={`/tags/${tag}/`}>
-            {tag} ({count})
+            {labelFor(tagLabels, tag)} ({count})
           </a>
         ))}
       </div>
     )}
   </section>
 </BaseLayout>
-

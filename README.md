@@ -1,6 +1,6 @@
 # Goddamn Apps
 
-Apps that screw users, documented with receipts.
+狗日的 App 档案。记录坑用户的产品、公司和操作，但正文必须有证据。
 
 ## Development
 
@@ -11,7 +11,7 @@ npm run dev
 
 ## Content
 
-Cases live in `src/pages/cases/*.md`. Keep each case short, source-backed, and tagged by behavior:
+案例放在 `src/pages/cases/*.md`。每篇保持短、准、有来源，并按行为打标签：
 
 - `privacy-abuse`
 - `malware-like`
@@ -22,7 +22,7 @@ Cases live in `src/pages/cases/*.md`. Keep each case short, source-backed, and t
 - `account-hostage`
 - `price-games`
 
-Each case should distinguish confirmed facts from reported or alleged claims.
+每篇案例都要区分“已确认事实”“公开报道”“待核实说法”。
 
 ## Deploy
 
@@ -32,4 +32,3 @@ Cloudflare Pages:
 - Output directory: `dist`
 
 GitHub Pages also works if needed.
-

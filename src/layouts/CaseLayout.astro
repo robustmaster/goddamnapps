@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import { labelFor, severityLabels, statusLabels, tagLabels } from "../data/labels.js";
 
 const { frontmatter } = Astro.props;
 const tags = frontmatter.tags ?? [];
@@ -9,7 +10,7 @@ const pageTitle = `${frontmatter.title} | Goddamn Apps`;
 
 <BaseLayout title={pageTitle} description={frontmatter.summary}>
   <article class="case-page">
-    <a class="back-link" href="/">Back to cases</a>
+    <a class="back-link" href="/">返回案例</a>
     <header class="case-hero">
       <p class="eyebrow">{frontmatter.company}</p>
       <h1>{frontmatter.title}</h1>
@@ -17,25 +18,25 @@ const pageTitle = `${frontmatter.title} | Goddamn Apps`;
 
       <dl>
         <div class="fact-row">
-          <dt>App</dt>
+          <dt>应用</dt>
           <dd>{frontmatter.app}</dd>
         </div>
         <div class="fact-row">
-          <dt>Status</dt>
-          <dd><span class="badge amber">{frontmatter.status}</span></dd>
+          <dt>状态</dt>
+          <dd><span class="badge amber">{labelFor(statusLabels, frontmatter.status)}</span></dd>
         </div>
         <div class="fact-row">
-          <dt>Severity</dt>
-          <dd><span class="badge danger">{frontmatter.severity}</span></dd>
+          <dt>恶劣程度</dt>
+          <dd><span class="badge danger">{labelFor(severityLabels, frontmatter.severity)}</span></dd>
         </div>
         <div class="fact-row">
-          <dt>Tags</dt>
+          <dt>标签</dt>
           <dd class="mini-meta">
-            {tags.map((tag) => <a class="badge teal" href={`/tags/${tag}/`}>{tag}</a>)}
+            {tags.map((tag) => <a class="badge teal" href={`/tags/${tag}/`}>{labelFor(tagLabels, tag)}</a>)}
           </dd>
         </div>
         <div class="fact-row">
-          <dt>Last updated</dt>
+          <dt>最后更新</dt>
           <dd>{frontmatter.date}</dd>
         </div>
       </dl>
@@ -46,7 +47,7 @@ const pageTitle = `${frontmatter.title} | Goddamn Apps`;
 
       {sourceLinks.length > 0 && (
         <>
-          <h2>Receipts</h2>
+          <h2>证据</h2>
           <ul class="source-list">
             {sourceLinks.map((source) => (
               <li>
@@ -61,4 +62,3 @@ const pageTitle = `${frontmatter.title} | Goddamn Apps`;
     </div>
   </article>
 </BaseLayout>
-
