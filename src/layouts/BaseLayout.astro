@@ -2,13 +2,14 @@
 import "../styles/global.css";
 
 const {
-  title = "Goddamn Apps",
-  description = "狗日的 App 档案：记录那些坑用户、偷隐私、玩暗黑模式、滥用权限的产品和公司。"
+  title = "狗日的应用",
+  description = "记录应用侵害用户的行为。"
 } = Astro.props;
 
 const navItems = [
-  { href: "/", label: "案例" },
-  { href: "/tags/", label: "标签" },
+  { href: "/", label: "首页" },
+  { href: "/misdeeds/", label: "恶行" },
+  { href: "/companies/", label: "公司" },
   { href: "/about/", label: "关于" }
 ];
 ---
@@ -30,9 +31,9 @@ const navItems = [
     <div class="site-shell">
       <header class="site-header">
         <div class="header-inner">
-          <a class="brand" href="/" aria-label="Goddamn Apps 首页">
+          <a class="brand" href="/" aria-label="狗日的应用首页">
             <img src="/favicon.svg" alt="" width="34" height="34" />
-            <span>Goddamn Apps</span>
+            <span>狗日的应用</span>
           </a>
           <nav class="nav" aria-label="主导航">
             {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
@@ -42,12 +43,6 @@ const navItems = [
       <main class="main">
         <slot />
       </main>
-      <footer class="footer">
-        <div class="footer-inner">
-          <span>狗日的 App 档案。只收有证据的用户伤害记录。</span>
-          <a href="mailto:tips@goddamnapps.com">tips@goddamnapps.com</a>
-        </div>
-      </footer>
     </div>
   </body>
 </html>

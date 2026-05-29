@@ -26,23 +26,22 @@ const tagLabel = labelFor(tagLabels, tag);
 ---
 
 <BaseLayout title={`${tagLabel} | 狗日的应用`}>
-  <section>
+  <header class="page-head">
     <a class="back-link" href="/misdeeds/">返回恶行</a>
-    <header class="page-head">
-      <h1>{tagLabel}</h1>
-    </header>
+    <h1>{tagLabel}</h1>
+  </header>
 
-    <div class="article-list">
-      {cases.map((entry) => (
-        <article class="article-row">
-          <h3><a href={entry.url}>{entry.title}</a></h3>
-          <div class="row-meta">
-            <a href={`/companies/${entry.companySlug}/`}>{entry.company}</a>
-            <span class="badge amber">{labelFor(statusLabels, entry.status)}</span>
-            <span class="badge danger">{labelFor(severityLabels, entry.severity)}</span>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
+  <div class="article-list">
+    {cases.map((entry) => (
+      <article class="article-row">
+        <h3><a href={entry.url}>{entry.title}</a></h3>
+        <div class="row-meta">
+          <a href={`/companies/${entry.companySlug}/`}>{entry.company}</a>
+          <span class="badge amber">{labelFor(statusLabels, entry.status)}</span>
+          <span class="badge danger">{labelFor(severityLabels, entry.severity)}</span>
+        </div>
+      </article>
+    ))}
+  </div>
 </BaseLayout>
+

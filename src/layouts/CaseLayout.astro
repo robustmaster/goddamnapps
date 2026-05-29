@@ -5,14 +5,20 @@ import { labelFor, severityLabels, statusLabels, tagLabels } from "../data/label
 const { frontmatter } = Astro.props;
 const tags = frontmatter.tags ?? [];
 const sourceLinks = frontmatter.sources ?? [];
-const pageTitle = `${frontmatter.title} | Goddamn Apps`;
+const pageTitle = `${frontmatter.title} | 狗日的应用`;
 ---
 
 <BaseLayout title={pageTitle} description={frontmatter.summary}>
   <article class="case-page">
     <a class="back-link" href="/">返回案例</a>
     <header class="case-hero">
-      <p class="eyebrow">{frontmatter.company}</p>
+      <p class="eyebrow">
+        {frontmatter.companySlug ? (
+          <a href={`/companies/${frontmatter.companySlug}/`}>{frontmatter.company}</a>
+        ) : (
+          frontmatter.company
+        )}
+      </p>
       <h1>{frontmatter.title}</h1>
       <p class="summary">{frontmatter.summary}</p>
 
@@ -32,7 +38,7 @@ const pageTitle = `${frontmatter.title} | Goddamn Apps`;
         <div class="fact-row">
           <dt>标签</dt>
           <dd class="mini-meta">
-            {tags.map((tag) => <a class="badge teal" href={`/tags/${tag}/`}>{labelFor(tagLabels, tag)}</a>)}
+            {tags.map((tag) => <a class="badge teal" href={`/misdeeds/${tag}/`}>{labelFor(tagLabels, tag)}</a>)}
           </dd>
         </div>
         <div class="fact-row">

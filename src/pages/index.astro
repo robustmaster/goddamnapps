@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { labelFor, severityLabels, statusLabels, tagLabels } from "../data/labels.js";
+import { labelFor, tagLabels } from "../data/labels.js";
 
 const caseModules = import.meta.glob("./cases/*.md", { eager: true });
 const cases = Object.values(caseModules)
@@ -14,54 +14,33 @@ const allTags = [...new Set(cases.flatMap((entry) => entry.tags ?? []))].sort();
 ---
 
 <BaseLayout>
-  <section class="hero">
-    <div>
-      <p class="eyebrow">坑用户可以，别怕被记下来。</p>
-      <h1 class="hero-title">
-        <span>狗日的 App，</span>
-        <span>一笔一笔记账。</span>
-      </h1>
-      <p class="hero-copy">
-        这里记录那些偷隐私、玩暗黑模式、滥用权限、退款踢皮球、把用户当耗材的产品和公司。
-        情绪可以很大，证据必须够硬。
-      </p>
-    </div>
-    <aside class="callout">
-      <strong>有证据？</strong>
-      <p>
-        把来源链接、截图、版本号、复现步骤发到
-        <a href="mailto:tips@goddamnapps.com">tips@goddamnapps.com</a>。
-      </p>
-    </aside>
-  </section>
+  <header class="page-head">
+    <h1>狗日的应用</h1>
+  </header>
 
   <section aria-labelledby="tags-heading">
     <div class="section-head">
       <h2 id="tags-heading">标签</h2>
     </div>
     <div class="tag-list">
-      {allTags.map((tag) => <a class="pill" href={`/tags/${tag}/`}>{labelFor(tagLabels, tag)}</a>)}
+      {allTags.map((tag) => <a class="pill" href={`/misdeeds/${tag}/`}>{labelFor(tagLabels, tag)}</a>)}
     </div>
   </section>
 
   <section aria-labelledby="latest-heading">
     <div class="section-head">
-      <h2 id="latest-heading">最新记录</h2>
+      <h2 id="latest-heading">文章</h2>
     </div>
 
     {cases.length === 0 ? (
       <p class="empty">还没有记录。</p>
     ) : (
-      <div class="case-grid">
+      <div class="article-list">
         {cases.map((entry) => (
-          <article class="case-card">
-            <p class="eyebrow">{entry.company}</p>
+          <article class="article-row">
             <h3><a href={entry.url}>{entry.title}</a></h3>
-            <p>{entry.summary}</p>
-            <div class="case-meta">
-              <span class="badge amber">{labelFor(statusLabels, entry.status)}</span>
-              <span class="badge danger">{labelFor(severityLabels, entry.severity)}</span>
-              {(entry.tags ?? []).map((tag) => <span class="badge teal">{labelFor(tagLabels, tag)}</span>)}
+            <div class="row-meta">
+              <a href={`/companies/${entry.companySlug}/`}>{entry.company}</a>
             </div>
           </article>
         ))}

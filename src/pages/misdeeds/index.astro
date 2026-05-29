@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { labelFor, tagLabels } from "../../data/labels.js";
+
+const caseModules = import.meta.glob("../cases/*.md", { eager: true });
+const cases = Object.values(caseModules).map((entry) => entry.frontmatter);
+const tagCounts = cases.reduce((counts, entry) => {
+  for (const tag of entry.tags ?? []) {
+    counts.set(tag, (counts.get(tag) ?? 0) + 1);
+  }
+  return counts;
+}, new Map());
+
+const tags = [...tagCounts.entries()].sort(([a], [b]) =>
+  labelFor(tagLabels, a).localeCompare(labelFor(tagLabels, b), "zh-CN")
+);
+---
+
+<BaseLayout title="恶行 | 狗日的应用">
+  <header class="page-head">
+    <h1>恶行</h1>
+  </header>
+
+  {tags.length === 0 ? (
+    <p class="empty">还没有记录。</p>
+  ) : (
+    <div class="index-list">
+      {tags.map(([tag, count]) => (
+        <a class="index-row" href={`/misdeeds/${tag}/`}>
+          <span>{labelFor(tagLabels, tag)}</span>
+          <strong>{count}</strong>
+        </a>
+      ))}
+    </div>
+  )}
+</BaseLayout>
+

@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const caseModules = import.meta.glob("../cases/*.md", { eager: true });
+const cases = Object.values(caseModules).map((entry) => entry.frontmatter);
+const companies = cases.reduce((items, entry) => {
+  const slug = entry.companySlug;
+  if (!slug) return items;
+  const current = items.get(slug) ?? { slug, name: entry.company, count: 0 };
+  current.count += 1;
+  items.set(slug, current);
+  return items;
+}, new Map());
+
+const companyList = [...companies.values()].sort((a, b) =>
+  a.name.localeCompare(b.name, "zh-CN")
+);
+---
+
+<BaseLayout title="公司 | 狗日的应用">
+  <header class="page-head">
+    <h1>公司</h1>
+  </header>
+
+  {companyList.length === 0 ? (
+    <p class="empty">还没有记录。</p>
+  ) : (
+    <div class="index-list">
+      {companyList.map((company) => (
+        <a class="index-row" href={`/companies/${company.slug}/`}>
+          <span>{company.name}</span>
+          <strong>{company.count}</strong>
+        </a>
+      ))}
+    </div>
+  )}
+</BaseLayout>
+

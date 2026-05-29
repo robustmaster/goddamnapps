@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { labelFor, severityLabels, statusLabels, tagLabels } from "../../data/labels.js";
+
+export function getStaticPaths() {
+  const caseModules = import.meta.glob("../cases/*.md", { eager: true });
+  const allCases = Object.values(caseModules)
+    .map((entry) => ({
+      ...entry.frontmatter,
+      url: entry.url.endsWith("/") ? entry.url : `${entry.url}/`
+    }))
+    .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  const companies = [...new Set(allCases.map((entry) => entry.companySlug).filter(Boolean))];
+
+  return companies.map((company) => ({
+    params: { company },
+    props: {
+      company,
+      cases: allCases.filter((entry) => entry.companySlug === company)
+    }
+  }));
+}
+
+const { cases } = Astro.props;
+const companyName = cases[0]?.company ?? "公司";
+---
+
+<BaseLayout title={`${companyName} | 狗日的应用`}>
+  <header class="page-head">
+    <a class="back-link" href="/companies/">返回公司</a>
+    <h1>{companyName}</h1>
+  </header>
+
+  <div class="article-list">
+    {cases.map((entry) => (
+      <article class="article-row">
+        <h3><a href={entry.url}>{entry.title}</a></h3>
+        <div class="row-meta">
+          <span class="badge amber">{labelFor(statusLabels, entry.status)}</span>
+          <span class="badge danger">{labelFor(severityLabels, entry.severity)}</span>
+          {(entry.tags ?? []).map((tag) => <span class="badge teal">{labelFor(tagLabels, tag)}</span>)}
+        </div>
+      </article>
+    ))}
+  </div>
+</BaseLayout>
+
