@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  const caseModules = import.meta.glob("../cases/*.md", { eager: true });
+  const allCases = Object.values(caseModules)
+    .map((entry) => ({
+      ...entry.frontmatter,
+      url: entry.url.endsWith("/") ? entry.url : `${entry.url}/`
+    }))
+    .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  const allTags = [...new Set(allCases.flatMap((entry) => entry.tags ?? []))];
+
+  return allTags.map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      cases: allCases.filter((entry) => (entry.tags ?? []).includes(tag))
+    }
+  }));
+}
+
+const { tag, cases } = Astro.props;
+---
+
+<BaseLayout title={`${tag} | Goddamn Apps`}>
+  <section class="case-page">
+    <a class="back-link" href="/tags/">Back to tags</a>
+    <header class="case-hero">
+      <p class="eyebrow">Tag</p>
+      <h1>{tag}</h1>
+      <p class="summary">Cases tagged with {tag}.</p>
+    </header>
+
+    <div class="case-grid">
+      {cases.map((entry) => (
+        <article class="case-card">
+          <p class="eyebrow">{entry.company}</p>
+          <h2><a href={entry.url}>{entry.title}</a></h2>
+          <p>{entry.summary}</p>
+          <div class="case-meta">
+            <span class="badge amber">{entry.status}</span>
+            <span class="badge danger">{entry.severity}</span>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

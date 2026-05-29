@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const caseModules = import.meta.glob("../cases/*.md", { eager: true });
+const cases = Object.values(caseModules).map((entry) => entry.frontmatter);
+const tagCounts = cases.reduce((counts, entry) => {
+  for (const tag of entry.tags ?? []) {
+    counts.set(tag, (counts.get(tag) ?? 0) + 1);
+  }
+  return counts;
+}, new Map());
+
+const tags = [...tagCounts.entries()].sort(([a], [b]) => a.localeCompare(b));
+---
+
+<BaseLayout title="Tags | Goddamn Apps">
+  <section class="case-page">
+    <header class="case-hero">
+      <p class="eyebrow">Tags</p>
+      <h1>How the apps are cursed.</h1>
+      <p class="summary">Behavior tags describe what the company did to users.</p>
+    </header>
+
+    {tags.length === 0 ? (
+      <p class="empty">No tags yet.</p>
+    ) : (
+      <div class="tag-list">
+        {tags.map(([tag, count]) => (
+          <a class="pill" href={`/tags/${tag}/`}>
+            {tag} ({count})
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>
+

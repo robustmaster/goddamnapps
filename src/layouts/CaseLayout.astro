@@ -1,0 +1,64 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+const { frontmatter } = Astro.props;
+const tags = frontmatter.tags ?? [];
+const sourceLinks = frontmatter.sources ?? [];
+const pageTitle = `${frontmatter.title} | Goddamn Apps`;
+---
+
+<BaseLayout title={pageTitle} description={frontmatter.summary}>
+  <article class="case-page">
+    <a class="back-link" href="/">Back to cases</a>
+    <header class="case-hero">
+      <p class="eyebrow">{frontmatter.company}</p>
+      <h1>{frontmatter.title}</h1>
+      <p class="summary">{frontmatter.summary}</p>
+
+      <dl>
+        <div class="fact-row">
+          <dt>App</dt>
+          <dd>{frontmatter.app}</dd>
+        </div>
+        <div class="fact-row">
+          <dt>Status</dt>
+          <dd><span class="badge amber">{frontmatter.status}</span></dd>
+        </div>
+        <div class="fact-row">
+          <dt>Severity</dt>
+          <dd><span class="badge danger">{frontmatter.severity}</span></dd>
+        </div>
+        <div class="fact-row">
+          <dt>Tags</dt>
+          <dd class="mini-meta">
+            {tags.map((tag) => <a class="badge teal" href={`/tags/${tag}/`}>{tag}</a>)}
+          </dd>
+        </div>
+        <div class="fact-row">
+          <dt>Last updated</dt>
+          <dd>{frontmatter.date}</dd>
+        </div>
+      </dl>
+    </header>
+
+    <div class="prose">
+      <slot />
+
+      {sourceLinks.length > 0 && (
+        <>
+          <h2>Receipts</h2>
+          <ul class="source-list">
+            {sourceLinks.map((source) => (
+              <li>
+                <a class="source-link" href={source.url} rel="noreferrer" target="_blank">
+                  {source.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+  </article>
+</BaseLayout>
+

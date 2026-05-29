@@ -1,0 +1,53 @@
+---
+import "../styles/global.css";
+
+const {
+  title = "Goddamn Apps",
+  description = "Apps that screw users, documented with receipts."
+} = Astro.props;
+
+const navItems = [
+  { href: "/", label: "Cases" },
+  { href: "/tags/", label: "Tags" },
+  { href: "/about/", label: "About" }
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="header-inner">
+          <a class="brand" href="/" aria-label="Goddamn Apps home">
+            <img src="/favicon.svg" alt="" width="34" height="34" />
+            <span>Goddamn Apps</span>
+          </a>
+          <nav class="nav" aria-label="Primary navigation">
+            {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+          </nav>
+        </div>
+      </header>
+      <main class="main">
+        <slot />
+      </main>
+      <footer class="footer">
+        <div class="footer-inner">
+          <span>Goddamn Apps documents consumer-hostile software with receipts.</span>
+          <a href="mailto:tips@goddamnapps.com">tips@goddamnapps.com</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
