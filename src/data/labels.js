@@ -2,6 +2,7 @@ export const tagLabels = {
   "privacy-abuse": "隐私滥用",
   "malware-like": "类恶意软件",
   "dark-patterns": "暗黑模式",
+  "exit-friction": "退出阻挠",
   "subscription-traps": "续费陷阱",
   "refund-hell": "退款地狱",
   "ad-abuse": "广告滥用",
@@ -11,6 +12,7 @@ export const tagLabels = {
 
 export const statusLabels = {
   alleged: "待核实",
+  "user-report": "用户反馈",
   reported: "公开报道",
   confirmed: "已确认",
   fixed: "已修复",
@@ -28,4 +30,3 @@ export const severityLabels = {
 export function labelFor(labels, key) {
   return labels[key] ?? key;
 }
-
